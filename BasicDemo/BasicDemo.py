@@ -35,7 +35,7 @@ def ToHexStr(num):
 
 # main function
 if __name__ == "__main__":
-    global device_list
+    global deviceList 
     deviceList = MV_CC_DEVICE_INFO_LIST()
     global tlayerType
     tlayerType = MV_GIGE_DEVICE | MV_USB_DEVICE
@@ -44,21 +44,21 @@ if __name__ == "__main__":
     global nSelCamIndex
     nSelCamIndex = 0
     global obj_cam_operation
-    obj_cam_operation = 0 
+    obj_cam_operation = 0
     global b_is_run
     b_is_run = False
 
     # interface
     window = tk.Tk()
-    window.title('BasicDemo')
-    window.geometry('1150x650') #window size
+    window.title('Mvision Camera')
+    window.geometry('1150x650')
     model_val = tk.StringVar()
     global triggercheck_val
     triggercheck_val = tk.IntVar()
-    page = Frame(window, height=400, width=60, relief=GROOVE, bd=5, borderwidth=4)
+    page = Frame(window,height=400,width=60,relief=GROOVE,bd=5,borderwidth=4)
     page.pack(expand=True, fill=BOTH)
     panel = Label(page)
-    panel.place(x=190,y=10,height=600,width=1000)
+    panel.place(x=230, y=10,height=600,width=1000)
 
     # Bind dropdown list to device information 
     def xFunc(event):
@@ -67,13 +67,13 @@ if __name__ == "__main__":
 
     # Scanning Device
     def enum_devices():
-        global device_list
+        global deviceList
         global obj_cam_operation
         deviceList = MV_CC_DEVICE_INFO_LIST()
         tlayerType = MV_GIGE_DEVICE | MV_USB_DEVICE
-        ret = MvCamera.MV_CC_EnumDevices(tlayerType,deviceList)
+        ret = MvCamera.MV_CC_EnumDevices(tlayerType, deviceList)
         if ret != 0:
-                tkinter.messagebox.showerror('show error','enum devices fail! ret = '+ ToHexStr(ret))
+            tkinter.messagebox.showerror('show error','enum devices fail! ret = '+ ToHexStr(ret))
 
         if deviceList.nDeviceNum == 0:
             tkinter.messagebox.showinfo('show info','find no device!')
@@ -116,7 +116,7 @@ if __name__ == "__main__":
                 devList.append("["+str(i)+"]USB: "+ chUserDefinedName +"(" + str(strSerialNumber) + ")")
         device_list["value"] = devList
         device_list.current(0)
-
+    
     # Open selected Device
     def open_device():
         global deviceList
@@ -142,18 +142,19 @@ if __name__ == "__main__":
     # Stop grabbing
     def stop_grabbing():
         global obj_cam_operation
-        obj_cam_operation.Stop_grabbing()
-    
-    # Closing device
+        obj_cam_operation.Stop_grabbing()    
+
+    # Closing device 
     def close_device():
         global b_is_run
         global obj_cam_operation
         obj_cam_operation.Close_device()
-        b_is_run = False
+        b_is_run = False 
         text_frame_rate.delete(1.0, tk.END)
         text_exposure_time.delete(1.0, tk.END)
         text_gain.delete(1.0, tk.END)
 
+    
     # trigger mode
     def set_triggermode():
         global obj_cam_operation
@@ -172,11 +173,11 @@ if __name__ == "__main__":
         global obj_cam_operation
         obj_cam_operation.b_save_bmp = True
 
-    # save to JPG
+    # Save to JPG
     def jpg_save():
         global obj_cam_operation
         obj_cam_operation.b_save_jpg = True
-    
+
     # Get parameter
     def get_parameter():
         global obj_cam_operation
@@ -187,8 +188,7 @@ if __name__ == "__main__":
         text_exposure_time.insert(1.0,obj_cam_operation.exposure_time)
         text_gain.delete(1.0, tk.END)
         text_gain.insert(1.0, obj_cam_operation.gain)
-    
-    # Set parameter
+
     def set_parameter():
         global obj_cam_operation
         obj_cam_operation.exposure_time = text_exposure_time.get(1.0,tk.END)
@@ -200,7 +200,7 @@ if __name__ == "__main__":
         obj_cam_operation.Set_parameter(obj_cam_operation.frame_rate,obj_cam_operation.exposure_time,obj_cam_operation.gain)
 
     xVariable = tkinter.StringVar()
-    device_list = ttk.Combobox(window, textvariable=xVariable, width=30)
+    device_list = ttk.Combobox(window, textvariable=xVariable,width=30)
     device_list.place(x=20, y=20)
     device_list.bind("<<ComboboxSelected>>", xFunc)
 
